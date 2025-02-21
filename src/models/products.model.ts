@@ -10,9 +10,17 @@ const productSchema: Schema<IProduct> = new Schema({
     type: String,
     required: true
   },
+  category: {
+    type: Schema.Types.ObjectId,
+    ref: "Category"
+  },
   imageUrl: {
     type: String,
     required: false
+  },
+  currency: {
+    type: String,
+    defualt: "Naira"
   },
   countInStock: {
     type: Number,
