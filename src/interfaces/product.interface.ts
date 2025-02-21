@@ -1,10 +1,12 @@
 import { Document } from "mongoose";
 import { IUser } from "./user.interface";
+import ICategory from "./category.interface";
 
 interface IProduct extends Document {
   productName: string
   description: string
-  image: string
+  category: ICategory
+  imageUrl: string
   countInStock: Number
   price: Number
   rating: Number

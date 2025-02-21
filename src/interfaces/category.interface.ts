@@ -5,3 +5,5 @@ interface ICategory extends Document {
   description: string
   createdAt: Date
 }
+
+export default ICategory
