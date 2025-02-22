@@ -46,6 +46,13 @@ class ProductRoutes implements Routes {
             [authMiddleware],
             this.productController.deleteProduct
         );
+
+        // review product
+        this.router.post(
+            this.path + "/review-product/:productId",
+            [authMiddleware],
+            this.productController.reviewProduct
+        )
     };
 }
 

@@ -1,19 +1,23 @@
-import ProductModel from "@/models/products.model";
+import ProductModel, { productReviewModel } from "@/models/products.model";
 import {
     IProductRes,
     IProduct,
     IProductUpdate,
+    IReviewData,
 } from "@/interfaces/product.interface";
 import { isEmpty } from "@/utils/util";
 import HTTPException from "@/exceptions/http.exception";
 import { StatusCodes } from "http-status-codes";
 import { IProductData } from "@/schemas/product.validation.schema";
 import CategoryModel from "@/models/category.model";
-import { string } from "zod";
+import UserModel from "@/models/user.model";
+
 
 class ProductService {
     private productModel = ProductModel;
     private categoryModel = CategoryModel;
+    private productReviewModel = productReviewModel
+    private userModel = UserModel
     public getALlProducts = async (
         limit: number,
         page: number
@@ -123,6 +127,33 @@ class ProductService {
         }
         return upadatedProduct;
     };
+
+    // review Product 
+    public reviewProduct = async (productId: string, reviewData: IReviewData, userId: string): Promise<IProduct> => {
+        if (isEmpty(reviewData) || !productId || !userId) {
+            throw new HTTPException(StatusCodes.BAD_REQUEST, "Provide Product Reivew")
+        }
+        const user = await this.userModel.findById(userId);
+        if (!user) {
+            throw new HTTPException(StatusCodes.NOT_FOUND, "User not found");
+        }
+        const product = await this.productModel.findById(productId);
+        if (!product) {
+            throw new HTTPException(StatusCodes.BAD_REQUEST, "Product not found");
+        }
+
+        const review = await this.productReviewModel.create({
+            user: userId,
+            name: user.firstName,
+            comment: reviewData.comment,
+            rating: reviewData.rating
+        });
+
+        product.review.push(review);
+        product.numOfReview = product.review.length;
+
+        return product
+    }
 }
 
 export default ProductService;

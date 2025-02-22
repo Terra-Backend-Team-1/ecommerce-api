@@ -11,9 +11,17 @@ export interface IProduct extends Document {
     countInStock: Number;
     price: Number;
     rating: Number;
+    review: IReview[]
+    numOfReview: Number
     createdBy: IUser;
     createdAt: Date;
     UpdatedAt: Date;
+}
+
+
+export interface IReviewData {
+    rating: Number,
+    comment: string
 }
 
 export interface IProductRes {
@@ -33,6 +41,14 @@ export interface IProductUpdate {
     price?: Number;
     rating?: Number;
     UpdatedAt?: Number;
+}
+
+export interface IReview extends Document {
+    user: IUser
+    name: string
+    rating: Number
+    comment: string
+    createdAt: Date
 }
 
 export default IProduct;
