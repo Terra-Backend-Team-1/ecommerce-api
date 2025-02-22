@@ -1,9 +1,5 @@
 import ProductModel from "@/models/products.model";
-import {
-  IProductRes,
-  IProduct,
-  IProductUpdate,
-} from "@/interfaces/product.interface";
+import { IProductRes, IProduct, IProductUpdate } from "@/interfaces/product.interface";
 import { isEmpty } from "@/utils/util";
 import HTTPException from "@/exceptions/http.exception";
 import { StatusCodes } from "http-status-codes";
@@ -67,24 +63,18 @@ class ProductService {
     return product;
   };
 
-  public updateProduct = async (
-    productId: string,
-    productUpdateData: IProductUpdate,
-  ): Promise<IProduct> => {
+  public updateProduct = async (productId: string, productUpdateData: IProductUpdate): Promise<IProduct> => {
     if (!productId && isEmpty(productUpdateData)) {
-      throw new HTTPException(
-        StatusCodes.BAD_REQUEST,
-        "Provide Product Update Data",
-      );
+      throw new HTTPException(StatusCodes.BAD_REQUEST, "Provide Product Update Data");
     }
-    const upadatedProduct = await this.productModel
-      .findByIdAndUpdate(productId, productUpdateData, { new: true })
-      .populate("category", "createdBy");
+    const upadatedProduct = await this.productModel.findByIdAndUpdate(productId, productUpdateData, { new: true }).populate("category", "createdBy");
     if (!upadatedProduct) {
       throw new HTTPException(StatusCodes.NOT_FOUND, "Product not found");
     }
     return upadatedProduct;
-  };
+  }
+
+
 }
 
 export default ProductService;

@@ -1,19 +1,19 @@
-import ICategory from "@/interfaces/category.interface"
-import { model, Schema } from "mongoose"
+import ICategory from "@/interfaces/category.interface";
+import { model, Schema } from "mongoose";
 
 const categorySchema: Schema<ICategory> = new Schema({
   categoryName: {
     type: String,
-    required: true
+    required: true,
   },
   description: {
     type: String,
-    required: true
+    required: true,
   },
   createdAt: {
     type: Date,
-    default: Date.now()
-  }
+    default: Date.now(),
+  },
 });
 
 const CategoryModel = model<ICategory>("Category", categorySchema);
