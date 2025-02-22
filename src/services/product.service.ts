@@ -4,6 +4,7 @@ import {
     IProduct,
     IProductUpdate,
     IReviewData,
+    IReview,
 } from "@/interfaces/product.interface";
 import { isEmpty } from "@/utils/util";
 import HTTPException from "@/exceptions/http.exception";
@@ -130,7 +131,7 @@ class ProductService {
 
     // review Product 
     public reviewProduct = async (productId: string, reviewData: IReviewData, userId: string): Promise<IProduct> => {
-        if (isEmpty(reviewData) || !productId || !userId) {
+        if (isEmpty(reviewData)) {
             throw new HTTPException(StatusCodes.BAD_REQUEST, "Provide Product Reivew")
         }
         const user = await this.userModel.findById(userId);
@@ -142,6 +143,11 @@ class ProductService {
             throw new HTTPException(StatusCodes.BAD_REQUEST, "Product not found");
         }
 
+        const alreadyReviwed = product.review.find((r: IReview) => r.user.toString() === userId.toString());
+        if (alreadyReviwed) {
+            throw new HTTPException(StatusCodes.CONFLICT, "User already reviewed Product")
+        }
+
         const review = await this.productReviewModel.create({
             user: userId,
             name: user.firstName,
@@ -151,6 +157,8 @@ class ProductService {
 
         product.review.push(review);
         product.numOfReview = product.review.length;
+        product.rating = product.review.reduce((acc, Item) => Item.rating + acc, 0) / product.numOfReview;
+        product.save();
 
         return product
     }

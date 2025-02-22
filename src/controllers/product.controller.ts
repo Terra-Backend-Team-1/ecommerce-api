@@ -111,12 +111,16 @@ class ProductController {
             const userId = req.user?._id;
             const productId = req.params.productId;
             const review = req.body;
-            const product = this.productService.reviewProduct(userId, review, productId);
-            res.status(StatusCodes.CREATED).json({ data: product })
+            const product = await this.productService.reviewProduct(
+                productId,
+                review,
+                userId
+            );
+            res.status(StatusCodes.CREATED).json({ data: product });
         } catch (error) {
-            next(error)
+            next(error);
         }
-    }
+    };
 }
 
 export default ProductController;
