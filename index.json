@@ -1,0 +1,193 @@
+{
+	"info": {
+		"_postman_id": "7438fb5e-54f4-4639-9b96-d22fc94b6f81",
+		"name": "Ecommerce API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "33774097"
+	},
+	"item": [
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Get All Users",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:6379/user"
+					},
+					"response": [
+						{
+							"name": "Get All Users",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": "http://localhost:6379/user"
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						}
+					]
+				},
+				{
+					"name": "Delete User By Id",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "http://localhost:6379/user/{{userId}}"
+					},
+					"response": [
+						{
+							"name": "Delete User By Id",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": "http://localhost:6379/user/{{userId}}"
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						}
+					]
+				},
+				{
+					"name": "Update User By Id",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": "http://localhost:6379/user/{{userId}}"
+					},
+					"response": [
+						{
+							"name": "Update User By Id",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"firstName\": \"Aliyu\", \n    \"lastName\": \"Musa\"\n   \n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "http://localhost:6379/user/{{userId}}"
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "User Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n \"email\": \"testing1@gmail.com\",\n    \"password\": \"Test@123\"\n  \n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:6379/auth/login"
+					},
+					"response": [
+						{
+							"name": "User Login",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\n    \"email\": \"testing2@gmail.com\",\n    \"password\": \"Test@123\"\n  \n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "http://localhost:6379/auth/login"
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						}
+					]
+				},
+				{
+					"name": "User Signup",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\n    \"email\": \"testing1@gmail.com\",\n    \"firstName\": \"Musa\",\n    \"lastName\": \"shehu\",\n    \"password\": \"Test@123\",\n    \"passwordRepeat\": \"Test@123\",\n    \"role\": \"user\", \n    \"dateOfBirth\": \"2000-02-01\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:6379/auth/signup"
+					},
+					"response": [
+						{
+							"name": "User Signup",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\n    \"email\": \"testing2@gmail.com\",\n    \"firstName\": \"bello\",\n    \"lastName\": \"shehu\",\n    \"password\": \"Test@123\",\n    \"passwordRepeat\": \"Test@123\",\n    \"role\": \"admin\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "http://localhost:6379/auth/signup"
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": "{\n    \"data\": {\n        \"email\": \"testing2@gmail.com\",\n        \"password\": \"$2a$10$LGA62iC1b7YpdcVTBPKCye4bVKI/JSrkrLhYipKay9J6yG1giXKSK\",\n        \"firstName\": \"bello\",\n        \"lastName\": \"shehu\",\n        \"role\": \"admin\",\n        \"verificationTokenExpiresBy\": 0,\n        \"varificationToken\": \"\",\n        \"varified\": false,\n        \"_id\": \"67ae1b43c67fb675ae0dcb17\",\n        \"__v\": 0\n    },\n    \"message\": \"User registered\"\n}"
+						}
+					]
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": {
+					"token": "{{token_ecommerce}}"
+				}
+			}
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": {
+			"token": "{{token_ecommerce}}"
+		}
+	}
+}
