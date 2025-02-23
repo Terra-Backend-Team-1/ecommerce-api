@@ -13,11 +13,7 @@ class ProductRoutes implements Routes {
     }
 
     private inizializeRoutes = () => {
-        this.router.get(
-            this.path + "s",
-            [authMiddleware],
-            this.productController.getAllProducts
-        );
+        this.router.get(this.path + "s", this.productController.getAllProducts);
 
         // get a single product route
         this.router.get(
