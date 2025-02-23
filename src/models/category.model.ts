@@ -1,21 +1,26 @@
 import ICategory from "@/interfaces/category.interface";
-import { model, Schema } from "mongoose";
+import { Model, model, Schema } from "mongoose";
 
-const categorySchema: Schema<ICategory> = new Schema({
-    categoryName: {
-        type: String,
-        required: true,
-    },
-    description: {
-        type: String,
-        required: false,
-    },
-    createdAt: {
-        type: Date,
-        default: Date.now(),
-    },
+type CategoryModelType = Model<ICategory>;
+
+const categorySchema: Schema<ICategory, CategoryModelType> = new Schema({
+	categoryName: {
+		type: String,
+		required: true,
+	},
+	description: {
+		type: String,
+		required: true,
+	},
+	createdAt: {
+		type: Date,
+		default: Date.now(),
+	},
 });
 
-const CategoryModel = model<ICategory>("Category", categorySchema);
+const CategoryModel = model<ICategory, CategoryModelType>(
+	"Category",
+	categorySchema
+);
 
 export default CategoryModel;

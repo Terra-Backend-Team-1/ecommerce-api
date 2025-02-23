@@ -100,6 +100,27 @@ class ProductController {
             next(error);
         }
     };
+
+    // review products
+    public reviewProduct = async (
+        req: RequestWithUser,
+        res: Response,
+        next: NextFunction
+    ) => {
+        try {
+            const userId = req.user?._id;
+            const productId = req.params.productId;
+            const review = req.body;
+            const product = await this.productService.reviewProduct(
+                productId,
+                review,
+                userId
+            );
+            res.status(StatusCodes.CREATED).json({ data: product });
+        } catch (error) {
+            next(error);
+        }
+    };
 }
 
 export default ProductController;
