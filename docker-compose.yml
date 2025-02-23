@@ -72,7 +72,7 @@ services:
             - mongo
         environment:
             - APP_NAME=app3
-            -
+
     mongo:
         image: mvertes/alpine-mongo
         container_name: mongo
