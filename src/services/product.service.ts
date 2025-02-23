@@ -12,6 +12,7 @@ import { StatusCodes } from "http-status-codes";
 import { IProductData } from "@/schemas/product.validation.schema";
 import CategoryModel from "@/models/category.model";
 import UserModel from "@/models/user.model";
+import { PaginatedResult } from "@/typing/util.typing";
 
 
 class ProductService {
@@ -22,7 +23,7 @@ class ProductService {
     public getALlProducts = async (
         limit: number,
         page: number
-    ): Promise<IProductRes> => {
+    ): Promise<PaginatedResult<IProduct>> => {
         const nextPage = (page - 1) * limit;
         const products = await this.productModel
             .find()
@@ -31,11 +32,15 @@ class ProductService {
             .populate("category", "categoryName")
             .populate("createdBy");
         const totalProducts = await this.productModel.countDocuments();
+        const totalPages = Math.round(totalProducts / limit);
         return {
-            product: products,
+            totalDocuments: totalProducts,
+            totalPages: totalPages,
+            nextPage: page + 1,
+            limit: limit,
             currentPage: page,
-            totalPage: Math.ceil(totalProducts / limit),
-            totalNoOfProducts: totalProducts,
+            prevPage: page - 1,
+            data: products
         };
     };
 
