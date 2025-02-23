@@ -57,5 +57,4 @@ const ProductModel = model<IProduct, ProductModelType>(
 	"Product",
 	productSchema
 );
-
 export default ProductModel;
