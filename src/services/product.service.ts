@@ -13,12 +13,12 @@ import { IProductData } from "@/schemas/product.validation.schema";
 import CategoryModel from "@/models/category.model";
 import UserModel from "@/models/user.model";
 
-
 class ProductService {
     private productModel = ProductModel;
     private categoryModel = CategoryModel;
-    private productReviewModel = productReviewModel
-    private userModel = UserModel
+    private productReviewModel = productReviewModel;
+    private userModel = UserModel;
+
     public getALlProducts = async (
         limit: number,
         page: number
@@ -129,10 +129,17 @@ class ProductService {
         return upadatedProduct;
     };
 
-    // review Product 
-    public reviewProduct = async (productId: string, reviewData: IReviewData, userId: string): Promise<IProduct> => {
+    // review Product
+    public reviewProduct = async (
+        productId: string,
+        reviewData: IReviewData,
+        userId: string
+    ): Promise<IProduct> => {
         if (isEmpty(reviewData)) {
-            throw new HTTPException(StatusCodes.BAD_REQUEST, "Provide Product Reivew")
+            throw new HTTPException(
+                StatusCodes.BAD_REQUEST,
+                "Provide Product Reivew"
+            );
         }
         const user = await this.userModel.findById(userId);
         if (!user) {
@@ -140,28 +147,40 @@ class ProductService {
         }
         const product = await this.productModel.findById(productId);
         if (!product) {
-            throw new HTTPException(StatusCodes.BAD_REQUEST, "Product not found");
+            throw new HTTPException(
+                StatusCodes.BAD_REQUEST,
+                "Product not found"
+            );
         }
 
-        const alreadyReviwed = product.review.find((r: IReview) => r.user.toString() === userId.toString());
+        const alreadyReviwed = product.review.find(
+            (r: IReview) => r.user.toString() === userId.toString()
+        );
         if (alreadyReviwed) {
-            throw new HTTPException(StatusCodes.CONFLICT, "User already reviewed Product")
+            throw new HTTPException(
+                StatusCodes.CONFLICT,
+                "User already reviewed Product"
+            );
         }
 
         const review = await this.productReviewModel.create({
             user: userId,
             name: user.firstName,
             comment: reviewData.comment,
-            rating: reviewData.rating
+            rating: reviewData.rating,
         });
 
         product.review.push(review);
         product.numOfReview = product.review.length;
-        product.rating = product.review.reduce((acc, Item) => Item.rating + acc, 0) / product.numOfReview;
+        product.rating =
+            product.review.reduce(
+                (acc, Item) => (Item.rating as number) + acc,
+                0
+            ) / (product.numOfReview as number);
         product.save();
 
-        return product
-    }
+        return product;
+    };
 }
 
 export default ProductService;
